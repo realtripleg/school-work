@@ -18,23 +18,22 @@
             padding: 60px 20px 80px;
             overflow-x: hidden;
         }
-        body::before, body::after {
-            content: '';
+        .blob {
             position: fixed;
             border-radius: 50%;
-            filter: blur(120px);
+            filter: blur(100px);
             pointer-events: none; z-index: 0;
         }
-        body::before {
+        .blob-1 {
             width: 500px; height: 500px;
-            top: -150px; right: -100px;
-            background: rgba(191, 155, 48, 0.06);
+            top: -100px; right: -50px;
+            background: rgba(212, 169, 64, 0.15);
             animation: float1 22s ease-in-out infinite;
         }
-        body::after {
+        .blob-2 {
             width: 400px; height: 400px;
-            bottom: -100px; left: -80px;
-            background: rgba(168, 130, 40, 0.05);
+            bottom: -80px; left: -50px;
+            background: rgba(191, 155, 48, 0.12);
             animation: float2 28s ease-in-out infinite;
         }
         @keyframes float1 {
@@ -155,6 +154,8 @@
     </style>
 </head>
 <body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
     <div class="noise"></div>
     <a href="/school-work/" class="back">&larr; Back to Games</a>
     <div class="header">
