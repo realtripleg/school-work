@@ -32,9 +32,38 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 70px 24px 100px;
+            padding: 110px 24px 100px;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- BANNER --- */
+        .banner {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 50;
+            padding: 10px 24px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 500;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .banner .time-now {
+            color: var(--text);
+            letter-spacing: 0.3px;
+        }
+        .banner .countdown {
+            color: var(--gold);
+            letter-spacing: 0.5px;
+        }
+        .banner .countdown.done {
+            color: #4ade80;
         }
 
         .blob {
@@ -304,6 +333,11 @@
     </style>
 </head>
 <body>
+    <div class="banner">
+        <span class="time-now" id="timeNow"></span>
+        <span class="countdown" id="countdown"></span>
+    </div>
+
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
@@ -373,6 +407,46 @@
             </div>
             <div class="arrow">&rarr;</div>
         </a>
+        <a href="gunmayhem/" class="game-card">
+            <div class="icon-wrap">&#128299;</div>
+            <div class="info">
+                <div class="title">Gun Mayhem</div>
+                <div class="tag">flash / ruffle</div>
+            </div>
+            <div class="arrow">&rarr;</div>
+        </a>
+        <a href="gunmayhem2/" class="game-card">
+            <div class="icon-wrap">&#128299;</div>
+            <div class="info">
+                <div class="title">Gun Mayhem 2</div>
+                <div class="tag">flash / ruffle</div>
+            </div>
+            <div class="arrow">&rarr;</div>
+        </a>
+        <a href="gunmayhemredux/" class="game-card">
+            <div class="icon-wrap">&#128299;</div>
+            <div class="info">
+                <div class="title">Gun Mayhem Redux</div>
+                <div class="tag">flash / ruffle</div>
+            </div>
+            <div class="arrow">&rarr;</div>
+        </a>
+        <a href="rocketsoccer/" class="game-card">
+            <div class="icon-wrap">&#127936;</div>
+            <div class="info">
+                <div class="title">Rocket Soccer</div>
+                <div class="tag">unity webgl</div>
+            </div>
+            <div class="arrow">&rarr;</div>
+        </a>
+        <a href="snowbattleio/" class="game-card">
+            <div class="icon-wrap">&#10052;</div>
+            <div class="info">
+                <div class="title">Snowbattle.io</div>
+                <div class="tag">unity webgl</div>
+            </div>
+            <div class="arrow">&rarr;</div>
+        </a>
     </div>
 
     <script>
@@ -421,6 +495,46 @@
             document.getElementById('nameOverlay').classList.add('hidden');
             showGreeting(name);
         }
+        // --- School countdown banner ---
+        function updateBanner() {
+            const now = new Date();
+            const h = now.getHours(), m = now.getMinutes();
+
+            // Format current time
+            const ampm = h >= 12 ? 'pm' : 'am';
+            const h12 = h % 12 || 12;
+            const timeStr = h12 + ':' + String(m).padStart(2, '0') + ampm;
+            const days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+            const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+            document.getElementById('timeNow').textContent =
+                days[now.getDay()] + ' ' + months[now.getMonth()] + ' ' + now.getDate() + ' // ' + timeStr;
+
+            // Countdown logic
+            const el = document.getElementById('countdown');
+            const endHour = 14, endMin = 22; // 2:22pm
+            const startHour = 7, startMin = 0; // 7:00am
+
+            const totalNowMins = h * 60 + m;
+            const endMins = endHour * 60 + endMin;
+            const startMins = startHour * 60 + startMin;
+
+            if (totalNowMins >= endMins || totalNowMins < startMins) {
+                el.textContent = "school's over!";
+                el.classList.add('done');
+            } else {
+                el.classList.remove('done');
+                const diff = endMins - totalNowMins;
+                const hrs = Math.floor(diff / 60);
+                const mins = diff % 60;
+                if (hrs > 0) {
+                    el.textContent = hrs + 'hr ' + mins + 'min until school ends';
+                } else {
+                    el.textContent = mins + 'min until school ends';
+                }
+            }
+        }
+        updateBanner();
+        setInterval(updateBanner, 30000);
     </script>
 </body>
 </html>
