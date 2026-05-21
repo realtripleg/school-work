@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vex Games</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0f;
+            min-height: 100vh;
+            font-family: 'Inter', Arial, sans-serif;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(191,155,48,0.06) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(191,155,48,0.04) 0%, transparent 50%);
+            pointer-events: none; z-index: 0;
+        }
+        .back { position: fixed; top: 16px; left: 20px; color: #8a8272; text-decoration: none; font-size: 14px; z-index: 10; }
+        .back:hover { color: #fff; }
+        .header { text-align: center; margin-bottom: 40px; position: relative; z-index: 1; }
+        .header h1 {
+            font-size: 32px; font-weight: 800;
+            background: linear-gradient(135deg, #f5d442, #bf9b30, #f5d442, #d4a940);
+            background-size: 300% 300%;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; animation: shimmer 6s ease infinite;
+        }
+        @keyframes shimmer { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+        .divider { width: 80px; height: 2px; background: linear-gradient(90deg, transparent, #bf9b30, transparent); margin: 16px auto 0; }
+        .games {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px; max-width: 940px; width: 100%; position: relative; z-index: 1;
+        }
+        .game-card {
+            background: linear-gradient(145deg, #13131f, #1a1a2a);
+            border: 1px solid #2a2535; border-radius: 14px;
+            padding: 28px 20px; text-align: center;
+            text-decoration: none; color: #fff;
+            transition: transform 0.2s, border-color 0.3s, box-shadow 0.3s;
+            position: relative; overflow: hidden;
+        }
+        .game-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, #bf9b30, transparent);
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .game-card:hover { transform: translateY(-5px); border-color: #bf9b30; box-shadow: 0 8px 30px rgba(191,155,48,0.12); }
+        .game-card:hover::before { opacity: 1; }
+        .game-card .icon { font-size: 40px; margin-bottom: 10px; }
+        .game-card .title { font-size: 14px; font-weight: 600; color: #e8dcc8; }
+    </style>
+</head>
+<body>
+    <a href="/school-work/" class="back">&larr; Back to Games</a>
+    <div class="header">
+        <h1>Vex Games</h1>
+        <div class="divider"></div>
+    </div>
+    <div class="games">
+        <a href="vex/" class="game-card">
+            <div class="icon">&#127939;</div>
+            <div class="title">Vex</div>
+        </a>
+        <a href="vex2/" class="game-card">
+            <div class="icon">&#127939;</div>
+            <div class="title">Vex 2</div>
+        </a>
+        <a href="vex3/" class="game-card">
+            <div class="icon">&#127939;</div>
+            <div class="title">Vex 3</div>
+        </a>
+        <a href="vex4/" class="game-card">
+            <div class="icon">&#127939;</div>
+            <div class="title">Vex 4</div>
+        </a>
+        <a href="vex5/" class="game-card">
+            <div class="icon">&#127939;</div>
+            <div class="title">Vex 5</div>
+        </a>
+        <a href="vex6/" class="game-card">
+            <div class="icon">&#127939;</div>
+            <div class="title">Vex 6</div>
+        </a>
+        <a href="vex7/" class="game-card">
+            <div class="icon">&#127939;</div>
+            <div class="title">Vex 7</div>
+        </a>
+    </div>
+</body>
+</html>
