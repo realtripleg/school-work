@@ -390,13 +390,22 @@
             name => `let's get into it.`,
             name => `choose wisely.`,
         ];
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + days * 86400000);
+            document.cookie = name + "=" + encodeURIComponent(value) + ";expires=" + d.toUTCString() + ";path=/;SameSite=Lax";
+        }
+        function getCookie(name) {
+            const match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+            return match ? decodeURIComponent(match[1]) : null;
+        }
         function showGreeting(name) {
             const g = greetings[Math.floor(Math.random() * greetings.length)];
             const s = subtexts[Math.floor(Math.random() * subtexts.length)];
             document.getElementById('greeting').textContent = g(name);
             document.getElementById('subtext').textContent = s(name);
         }
-        const saved = localStorage.getItem('playerName');
+        const saved = getCookie('playerName');
         if (saved) {
             document.getElementById('nameOverlay').classList.add('hidden');
             showGreeting(saved);
@@ -408,7 +417,7 @@
         function submit() {
             const name = document.getElementById('nameInput').value.trim();
             if (!name) return;
-            localStorage.setItem('playerName', name);
+            setCookie('playerName', name, 365);
             document.getElementById('nameOverlay').classList.add('hidden');
             showGreeting(name);
         }
