@@ -5,55 +5,227 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Games</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            background: #0f0f1a;
+            background: #0a0a0f;
             min-height: 100vh;
-            font-family: Arial, sans-serif;
+            font-family: 'Inter', Arial, sans-serif;
             color: #fff;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 60px 20px;
+            padding: 50px 20px;
+            overflow-x: hidden;
         }
-        h1 {
-            font-size: 32px;
-            margin-bottom: 40px;
-            color: #e0e0e0;
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(191, 155, 48, 0.06) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(191, 155, 48, 0.04) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
         }
+
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .greeting {
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f5d442, #bf9b30, #f5d442, #d4a940);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 6s ease infinite;
+            margin-bottom: 8px;
+        }
+
+        .subtext {
+            font-size: 16px;
+            color: #8a8272;
+            font-weight: 400;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .divider {
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #bf9b30, transparent);
+            margin: 24px auto 0;
+        }
+
         .games {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 20px;
-            max-width: 900px;
+            max-width: 940px;
             width: 100%;
+            position: relative;
+            z-index: 1;
         }
+
         .game-card {
-            background: #1a1a2e;
-            border: 1px solid #2a2a4a;
-            border-radius: 10px;
-            padding: 30px 24px;
+            background: linear-gradient(145deg, #13131f, #1a1a2a);
+            border: 1px solid #2a2535;
+            border-radius: 14px;
+            padding: 34px 24px;
             text-align: center;
             text-decoration: none;
             color: #fff;
-            transition: transform 0.15s, border-color 0.15s;
+            transition: transform 0.2s, border-color 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
         }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #bf9b30, transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
         .game-card:hover {
-            transform: translateY(-4px);
-            border-color: #5a5a8a;
+            transform: translateY(-6px);
+            border-color: #bf9b30;
+            box-shadow: 0 8px 30px rgba(191, 155, 48, 0.12);
         }
+
+        .game-card:hover::before {
+            opacity: 1;
+        }
+
         .game-card .icon {
             font-size: 48px;
             margin-bottom: 14px;
         }
+
         .game-card .title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #e8dcc8;
+        }
+
+        /* Name prompt overlay */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 5, 10, 0.92);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .overlay.hidden { display: none; }
+
+        .name-box {
+            background: linear-gradient(145deg, #141420, #1c1c2e);
+            border: 1px solid #bf9b30;
+            border-radius: 16px;
+            padding: 48px 44px;
+            text-align: center;
+            max-width: 380px;
+            width: 90%;
+            box-shadow: 0 0 60px rgba(191, 155, 48, 0.1);
+        }
+
+        .name-box h2 {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f5d442, #bf9b30);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .name-box p {
+            color: #8a8272;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .name-box input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #2a2535;
+            border-radius: 10px;
+            background: #0e0e18;
+            color: #fff;
             font-size: 16px;
-            font-weight: bold;
+            font-family: 'Inter', Arial, sans-serif;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .name-box input:focus {
+            border-color: #bf9b30;
+        }
+
+        .name-box input::placeholder {
+            color: #555;
+        }
+
+        .name-box button {
+            margin-top: 16px;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #bf9b30, #d4a940);
+            color: #0a0a0f;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: 'Inter', Arial, sans-serif;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .name-box button:hover {
+            opacity: 0.85;
         }
     </style>
 </head>
 <body>
-    <h1>Games</h1>
+    <!-- Name prompt overlay -->
+    <div class="overlay" id="nameOverlay">
+        <div class="name-box">
+            <h2>Welcome</h2>
+            <p>What should we call you?</p>
+            <input type="text" id="nameInput" placeholder="Enter your name" autocomplete="off" maxlength="24">
+            <button id="nameBtn">Let's Go</button>
+        </div>
+    </div>
+
+    <div class="header">
+        <div class="greeting" id="greeting"></div>
+        <div class="subtext" id="subtext"></div>
+        <div class="divider"></div>
+    </div>
+
     <div class="games">
         <a href="espn-baseball/" class="game-card">
             <div class="icon">&#9918;</div>
@@ -73,5 +245,50 @@
         </a>
         <!-- add more game cards here -->
     </div>
+
+    <script>
+        const greetings = [
+            name => `Hey, ${name}!`,
+            name => `What's good, ${name}?`,
+            name => `Welcome back, ${name}.`,
+            name => `Hello, ${name}!`,
+            name => `Yo ${name}!`,
+        ];
+
+        const subtexts = [
+            name => `Ready when you are, ${name}.`,
+            name => `Pick your poison.`,
+            name => `What are we playing today?`,
+            name => `Let's get into it.`,
+            name => `Choose wisely.`,
+        ];
+
+        function showGreeting(name) {
+            const g = greetings[Math.floor(Math.random() * greetings.length)];
+            const s = subtexts[Math.floor(Math.random() * subtexts.length)];
+            document.getElementById('greeting').textContent = g(name);
+            document.getElementById('subtext').textContent = s(name);
+        }
+
+        const saved = localStorage.getItem('playerName');
+
+        if (saved) {
+            document.getElementById('nameOverlay').classList.add('hidden');
+            showGreeting(saved);
+        }
+
+        document.getElementById('nameBtn').addEventListener('click', submit);
+        document.getElementById('nameInput').addEventListener('keydown', e => {
+            if (e.key === 'Enter') submit();
+        });
+
+        function submit() {
+            const name = document.getElementById('nameInput').value.trim();
+            if (!name) return;
+            localStorage.setItem('playerName', name);
+            document.getElementById('nameOverlay').classList.add('hidden');
+            showGreeting(name);
+        }
+    </script>
 </body>
 </html>
