@@ -10,152 +10,247 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: #0a0a0f;
+            background: #060610;
             min-height: 100vh;
             font-family: 'Inter', Arial, sans-serif;
             color: #fff;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 50px 20px;
+            padding: 60px 20px 80px;
             overflow-x: hidden;
         }
 
-        body::before {
+        /* Animated background blobs */
+        body::before, body::after {
             content: '';
             position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(ellipse at 30% 20%, rgba(191, 155, 48, 0.06) 0%, transparent 50%),
-                        radial-gradient(ellipse at 70% 80%, rgba(191, 155, 48, 0.04) 0%, transparent 50%);
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        body::before {
+            width: 600px; height: 600px;
+            top: -200px; left: -100px;
+            background: rgba(191, 155, 48, 0.07);
+            animation: float1 20s ease-in-out infinite;
+        }
+        body::after {
+            width: 500px; height: 500px;
+            bottom: -150px; right: -100px;
+            background: rgba(168, 130, 40, 0.05);
+            animation: float2 25s ease-in-out infinite;
+        }
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0); }
+            33% { transform: translate(80px, 60px); }
+            66% { transform: translate(-40px, 30px); }
+        }
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0); }
+            33% { transform: translate(-60px, -40px); }
+            66% { transform: translate(50px, -20px); }
+        }
+
+        /* Subtle noise overlay */
+        .noise {
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
             pointer-events: none;
             z-index: 0;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 48px;
+            margin-bottom: 52px;
             position: relative;
             z-index: 1;
+            animation: fadeDown 0.8s ease;
         }
 
         .greeting {
-            font-size: 36px;
+            font-size: 40px;
             font-weight: 800;
-            background: linear-gradient(135deg, #f5d442, #bf9b30, #f5d442, #d4a940);
-            background-size: 300% 300%;
+            background: linear-gradient(135deg, #fce38a, #f5d442, #bf9b30, #f5d442, #fce38a);
+            background-size: 400% 400%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: shimmer 6s ease infinite;
-            margin-bottom: 8px;
+            animation: shimmer 5s ease infinite;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+            text-shadow: 0 0 40px rgba(191, 155, 48, 0.15);
         }
 
         .subtext {
             font-size: 16px;
-            color: #8a8272;
+            color: #6e6455;
             font-weight: 400;
+            letter-spacing: 0.3px;
         }
 
         @keyframes shimmer {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
         }
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         .divider {
-            width: 80px;
-            height: 2px;
+            width: 100px;
+            height: 1px;
             background: linear-gradient(90deg, transparent, #bf9b30, transparent);
-            margin: 24px auto 0;
+            margin: 20px auto 0;
+            position: relative;
+        }
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: -2px; left: 50%; transform: translateX(-50%);
+            width: 6px; height: 6px;
+            background: #bf9b30;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(191, 155, 48, 0.6);
         }
 
         .games {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px;
-            max-width: 940px;
+            gap: 18px;
+            max-width: 960px;
             width: 100%;
             position: relative;
             z-index: 1;
         }
 
         .game-card {
-            background: linear-gradient(145deg, #13131f, #1a1a2a);
-            border: 1px solid #2a2535;
-            border-radius: 14px;
-            padding: 34px 24px;
+            background: linear-gradient(160deg, #111119, #16162a);
+            border: 1px solid rgba(191, 155, 48, 0.08);
+            border-radius: 16px;
+            padding: 36px 24px;
             text-align: center;
             text-decoration: none;
             color: #fff;
-            transition: transform 0.2s, border-color 0.3s, box-shadow 0.3s;
+            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
             position: relative;
             overflow: hidden;
+            animation: fadeUp 0.6s ease backwards;
         }
+        .game-card:nth-child(1) { animation-delay: 0.05s; }
+        .game-card:nth-child(2) { animation-delay: 0.1s; }
+        .game-card:nth-child(3) { animation-delay: 0.15s; }
+        .game-card:nth-child(4) { animation-delay: 0.2s; }
+        .game-card:nth-child(5) { animation-delay: 0.25s; }
+        .game-card:nth-child(6) { animation-delay: 0.3s; }
 
+        /* Gold shimmer sweep on hover */
         .game-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(191, 155, 48, 0.04), transparent);
+            transition: left 0.6s ease;
+        }
+        .game-card:hover::before {
+            left: 100%;
+        }
+
+        /* Top gold border glow */
+        .game-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 20%; right: 20%;
+            height: 1px;
             background: linear-gradient(90deg, transparent, #bf9b30, transparent);
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: opacity 0.35s, left 0.35s, right 0.35s;
         }
 
         .game-card:hover {
-            transform: translateY(-6px);
-            border-color: #bf9b30;
-            box-shadow: 0 8px 30px rgba(191, 155, 48, 0.12);
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(191, 155, 48, 0.25);
+            box-shadow:
+                0 4px 20px rgba(0, 0, 0, 0.4),
+                0 8px 40px rgba(191, 155, 48, 0.08),
+                inset 0 1px 0 rgba(191, 155, 48, 0.1);
         }
-
-        .game-card:hover::before {
+        .game-card:hover::after {
             opacity: 1;
+            left: 10%;
+            right: 10%;
         }
 
         .game-card .icon {
-            font-size: 48px;
+            font-size: 44px;
             margin-bottom: 14px;
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+        }
+        .game-card:hover .icon {
+            transform: scale(1.15) translateY(-2px);
         }
 
         .game-card .title {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
-            color: #e8dcc8;
+            color: #c4b99a;
+            transition: color 0.3s;
+        }
+        .game-card:hover .title {
+            color: #f5d442;
         }
 
         /* Name prompt overlay */
         .overlay {
             position: fixed;
             inset: 0;
-            background: rgba(5, 5, 10, 0.92);
-            backdrop-filter: blur(12px);
+            background: rgba(3, 3, 8, 0.95);
+            backdrop-filter: blur(20px);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 100;
+            animation: overlayIn 0.4s ease;
+        }
+        .overlay.hidden {
+            display: none;
+        }
+        @keyframes overlayIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        .overlay.hidden { display: none; }
-
         .name-box {
-            background: linear-gradient(145deg, #141420, #1c1c2e);
-            border: 1px solid #bf9b30;
-            border-radius: 16px;
-            padding: 48px 44px;
+            background: linear-gradient(160deg, #111119, #18182e);
+            border: 1px solid rgba(191, 155, 48, 0.3);
+            border-radius: 20px;
+            padding: 52px 48px;
             text-align: center;
-            max-width: 380px;
+            max-width: 400px;
             width: 90%;
-            box-shadow: 0 0 60px rgba(191, 155, 48, 0.1);
+            box-shadow:
+                0 0 80px rgba(191, 155, 48, 0.06),
+                0 0 0 1px rgba(191, 155, 48, 0.05);
+            animation: boxIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s backwards;
+        }
+        @keyframes boxIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .name-box h2 {
-            font-size: 22px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #f5d442, #bf9b30);
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fce38a, #bf9b30);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -163,53 +258,59 @@
         }
 
         .name-box p {
-            color: #8a8272;
+            color: #6e6455;
             font-size: 14px;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         .name-box input {
             width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #2a2535;
-            border-radius: 10px;
-            background: #0e0e18;
+            padding: 14px 18px;
+            border: 1px solid rgba(191, 155, 48, 0.15);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
             color: #fff;
             font-size: 16px;
             font-family: 'Inter', Arial, sans-serif;
             outline: none;
-            transition: border-color 0.2s;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
-
         .name-box input:focus {
-            border-color: #bf9b30;
+            border-color: rgba(191, 155, 48, 0.5);
+            box-shadow: 0 0 20px rgba(191, 155, 48, 0.08);
         }
-
         .name-box input::placeholder {
-            color: #555;
+            color: #3a3a4a;
         }
 
         .name-box button {
-            margin-top: 16px;
+            margin-top: 18px;
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             border: none;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #bf9b30, #d4a940);
+            border-radius: 12px;
+            background: linear-gradient(135deg, #bf9b30, #d4a940, #bf9b30);
+            background-size: 200% 200%;
             color: #0a0a0f;
             font-size: 15px;
             font-weight: 700;
             font-family: 'Inter', Arial, sans-serif;
             cursor: pointer;
-            transition: opacity 0.2s;
+            transition: box-shadow 0.3s, transform 0.2s;
+            letter-spacing: 0.3px;
         }
-
         .name-box button:hover {
-            opacity: 0.85;
+            box-shadow: 0 4px 20px rgba(191, 155, 48, 0.25);
+            transform: translateY(-1px);
+        }
+        .name-box button:active {
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
+    <div class="noise"></div>
+
     <!-- Name prompt overlay -->
     <div class="overlay" id="nameOverlay">
         <div class="name-box">
