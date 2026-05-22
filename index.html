@@ -495,7 +495,7 @@
             try { localStorage.setItem('playerName', value); } catch(e) {}
             const d = new Date();
             d.setTime(d.getTime() + 365 * 86400000);
-            document.cookie = "playerName=" + encodeURIComponent(value) + ";expires=" + d.toUTCString() + ";path=/school-work/;SameSite=Lax";
+            document.cookie = "playerName=" + encodeURIComponent(value) + ";expires=" + d.toUTCString() + ";path=/;SameSite=Lax";
             document.cookie = "playerName=" + encodeURIComponent(value) + ";expires=" + d.toUTCString() + ";path=/;SameSite=Lax";
         }
         function loadName() {
