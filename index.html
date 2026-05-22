@@ -308,6 +308,28 @@
             border-left-color: var(--gold);
         }
 
+        /* --- AD BANNER --- */
+        .ad-banner {
+            max-width: 860px; width: 100%;
+            position: relative; z-index: 1;
+            margin-top: 40px;
+            display: block;
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            opacity: 0.85;
+        }
+        .ad-banner:hover {
+            opacity: 1;
+            border-color: var(--border-hover);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            transform: translateY(-2px);
+        }
+        .ad-banner img {
+            width: 100%; display: block;
+        }
+
         /* --- NAME PROMPT --- */
         .overlay {
             position: fixed; inset: 0;
@@ -525,6 +547,10 @@
             <div class="arrow">&rarr;</div>
         </a>
     </div>
+
+    <a href="https://lenosamples.carrd.co/" target="_blank" rel="noopener" class="ad-banner">
+        <img src="ad-banner.png" alt="Leno Samples">
+    </a>
 
     <script>
         const greetings = [
