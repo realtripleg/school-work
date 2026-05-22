@@ -169,18 +169,13 @@
             gap: 16px;
             animation: fadeUp 0.5s ease backwards;
         }
-        .game-card:nth-child(1) { animation-delay: 0.03s; }
-        .game-card:nth-child(2) { animation-delay: 0.06s; }
-        .game-card:nth-child(3) { animation-delay: 0.09s; }
-        .game-card:nth-child(4) { animation-delay: 0.12s; }
-        .game-card:nth-child(5) { animation-delay: 0.15s; }
-        .game-card:nth-child(6) { animation-delay: 0.18s; }
-        .game-card:nth-child(7) { animation-delay: 0.21s; }
-        .game-card:nth-child(8) { animation-delay: 0.24s; }
-        .game-card:nth-child(9) { animation-delay: 0.27s; }
-        .game-card:nth-child(10) { animation-delay: 0.30s; }
-        .game-card:nth-child(11) { animation-delay: 0.33s; }
-        .game-card:nth-child(12) { animation-delay: 0.36s; }
+        .game-card:nth-child(n) { animation-delay: calc(0.03s * var(--i, 1)); }
+        .game-card:nth-child(1){--i:1} .game-card:nth-child(2){--i:2} .game-card:nth-child(3){--i:3}
+        .game-card:nth-child(4){--i:4} .game-card:nth-child(5){--i:5} .game-card:nth-child(6){--i:6}
+        .game-card:nth-child(7){--i:7} .game-card:nth-child(8){--i:8} .game-card:nth-child(9){--i:9}
+        .game-card:nth-child(10){--i:10} .game-card:nth-child(11){--i:11} .game-card:nth-child(12){--i:12}
+        .game-card:nth-child(13){--i:13} .game-card:nth-child(14){--i:14} .game-card:nth-child(15){--i:15}
+        .game-card:nth-child(16){--i:16} .game-card:nth-child(17){--i:17}
 
         .game-card .icon-wrap {
             flex-shrink: 0;
@@ -257,6 +252,53 @@
             transform: translateY(-1px);
             transition-duration: 0.1s;
         }
+
+        /* star button */
+        .star-btn {
+            position: absolute;
+            top: 8px; right: 8px;
+            width: 28px; height: 28px;
+            display: flex; align-items: center; justify-content: center;
+            background: transparent;
+            border: none; cursor: pointer;
+            font-size: 14px; color: #2a2a38;
+            opacity: 0;
+            transition: all 0.25s;
+            z-index: 5;
+            border-radius: 50%;
+        }
+        .game-card:hover .star-btn { opacity: 1; }
+        .star-btn:hover { color: var(--gold); background: rgba(191,155,48,0.1); }
+        .star-btn.active { color: var(--gold); opacity: 1; }
+        .star-btn.active:hover { color: var(--gold-light); }
+
+        /* favorites section */
+        .fav-section {
+            max-width: 860px; width: 100%;
+            position: relative; z-index: 1;
+            margin-bottom: 32px;
+            display: none;
+        }
+        .fav-section.visible { display: block; }
+        .fav-header {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px; font-weight: 500;
+            color: var(--gold-dim);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            padding-left: 2px;
+        }
+        .fav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 10px;
+        }
+        .fav-grid .game-card {
+            border-color: rgba(191,155,48,0.15);
+            animation: none;
+        }
+        .fav-grid .game-card .star-btn { opacity: 1; color: var(--gold); }
 
         /* collection cards get a subtle accent */
         .game-card.collection {
@@ -368,109 +410,112 @@
         <div class="divider"></div>
     </div>
 
-    <div class="games">
-        <a href="papas-games/" class="game-card collection">
+    <div class="fav-section" id="favSection">
+        <div class="fav-header">starred</div>
+        <div class="fav-grid" id="favGrid"></div>
+    </div>
+
+    <div class="games" id="gamesGrid">
+        <a href="papas-games/" class="game-card collection" data-game="papas-games">
             <div class="icon-wrap">&#127829;</div>
-            <div class="info">
-                <div class="title">Papa's Games</div>
-                <div class="tag">17 games</div>
-            </div>
+            <div class="info"><div class="title">Papa's Games</div><div class="tag">17 games</div></div>
+            <button class="star-btn" onclick="toggleStar(event, this)">&#9733;</button>
             <div class="arrow">&rarr;</div>
         </a>
-        <a href="vex-games/" class="game-card collection">
+        <a href="vex-games/" class="game-card collection" data-game="vex-games">
             <div class="icon-wrap">&#127939;</div>
-            <div class="info">
-                <div class="title">Vex Games</div>
-                <div class="tag">7 games</div>
-            </div>
+            <div class="info"><div class="title">Vex Games</div><div class="tag">7 games</div></div>
+            <button class="star-btn" onclick="toggleStar(event, this)">&#9733;</button>
             <div class="arrow">&rarr;</div>
         </a>
-        <a href="espn-baseball/" class="game-card">
-            <div class="icon-wrap">&#9918;</div>
-            <div class="info">
-                <div class="title">ESPN Arcade Baseball</div>
-                <div class="tag">flash / ruffle</div>
-            </div>
-            <div class="arrow">&rarr;</div>
-        </a>
-        <a href="soflo-wheelie-life/" class="game-card">
-            <div class="icon-wrap">&#127949;</div>
-            <div class="info">
-                <div class="title">Soflo Wheelie Life</div>
-                <div class="tag">turbowarp</div>
-            </div>
-            <div class="arrow">&rarr;</div>
-        </a>
-        <a href="gold-digger/" class="game-card">
-            <div class="icon-wrap">&#9935;</div>
-            <div class="info">
-                <div class="title">Gold Digger FRVR</div>
-                <div class="tag">html5</div>
-            </div>
-            <div class="arrow">&rarr;</div>
-        </a>
-        <a href="snow-rider-3d/" class="game-card">
-            <div class="icon-wrap">&#9975;</div>
-            <div class="info">
-                <div class="title">Snow Rider 3D</div>
-                <div class="tag">unity webgl</div>
-            </div>
-            <div class="arrow">&rarr;</div>
-        </a>
-        <a href="gunmayhem-games/" class="game-card collection">
+        <a href="gunmayhem-games/" class="game-card collection" data-game="gunmayhem-games">
             <div class="icon-wrap">&#128299;</div>
-            <div class="info">
-                <div class="title">Gun Mayhem</div>
-                <div class="tag">3 games</div>
-            </div>
+            <div class="info"><div class="title">Gun Mayhem</div><div class="tag">3 games</div></div>
+            <button class="star-btn" onclick="toggleStar(event, this)">&#9733;</button>
             <div class="arrow">&rarr;</div>
         </a>
-        <a href="btd-games/" class="game-card collection">
+        <a href="btd-games/" class="game-card collection" data-game="btd-games">
             <div class="icon-wrap">&#127880;</div>
-            <div class="info">
-                <div class="title">Bloons Tower Defense</div>
-                <div class="tag">4 games</div>
-            </div>
+            <div class="info"><div class="title">Bloons Tower Defense</div><div class="tag">4 games</div></div>
+            <button class="star-btn" onclick="toggleStar(event, this)">&#9733;</button>
             <div class="arrow">&rarr;</div>
         </a>
-        <a href="rocketsoccer/" class="game-card">
+        <a href="espn-baseball/" class="game-card" data-game="espn-baseball">
+            <div class="icon-wrap">&#9918;</div>
+            <div class="info"><div class="title">ESPN Arcade Baseball</div><div class="tag">flash / ruffle</div></div>
+            <button class="star-btn" onclick="toggleStar(event, this)">&#9733;</button>
+            <div class="arrow">&rarr;</div>
+        </a>
+        <a href="soflo-wheelie-life/" class="game-card" data-game="soflo-wheelie-life">
+            <div class="icon-wrap">&#127949;</div>
+            <div class="info"><div class="title">Soflo Wheelie Life</div><div class="tag">turbowarp</div></div>
+            <button class="star-btn" onclick="toggleStar(event, this)">&#9733;</button>
+            <div class="arrow">&rarr;</div>
+        </a>
+        <a href="gold-digger/" class="game-card" data-game="gold-digger">
+            <div class="icon-wrap">&#9935;</div>
+            <div class="info"><div class="title">Gold Digger FRVR</div><div class="tag">html5</div></div>
+            <button class="star-btn" onclick="toggleStar(event, this)">&#9733;</button>
+            <div class="arrow">&rarr;</div>
+        </a>
+        <a href="snow-rider-3d/" class="game-card" data-game="snow-rider-3d">
+            <div class="icon-wrap">&#9975;</div>
+            <div class="info"><div class="title">Snow Rider 3D</div><div class="tag">unity webgl</div></div>
+            <button class="star-btn" onclick="toggleStar(event, this)">&#9733;</button>
+            <div class="arrow">&rarr;</div>
+        </a>
+        <a href="rocketsoccer/" class="game-card" data-game="rocketsoccer">
             <div class="icon-wrap">&#127936;</div>
-            <div class="info">
-                <div class="title">Rocket Soccer</div>
-                <div class="tag">unity webgl</div>
-            </div>
+            <div class="info"><div class="title">Rocket Soccer</div><div class="tag">unity webgl</div></div>
+            <button class="star-btn" onclick="toggleStar(event, this)">&#9733;</button>
             <div class="arrow">&rarr;</div>
         </a>
-        <a href="snowbattleio/" class="game-card">
+        <a href="snowbattleio/" class="game-card" data-game="snowbattleio">
             <div class="icon-wrap">&#10052;</div>
-            <div class="info">
-                <div class="title">Snowbattle.io</div>
-                <div class="tag">unity webgl</div>
-            </div>
+            <div class="info"><div class="title">Snowbattle.io</div><div class="tag">unity webgl</div></div>
+            <button class="star-btn" onclick="toggleStar(event, this)">&#9733;</button>
             <div class="arrow">&rarr;</div>
         </a>
-        <a href="chess/" class="game-card">
+        <a href="chess/" class="game-card" data-game="chess">
             <div class="icon-wrap">&#9822;</div>
-            <div class="info">
-                <div class="title">Chess</div>
-                <div class="tag">html5</div>
-            </div>
+            <div class="info"><div class="title">Chess</div><div class="tag">html5</div></div>
+            <button class="star-btn" onclick="toggleStar(event, this)">&#9733;</button>
             <div class="arrow">&rarr;</div>
         </a>
-        <a href="wordle/" class="game-card">
+        <a href="wordle/" class="game-card" data-game="wordle">
             <div class="icon-wrap">&#128221;</div>
-            <div class="info">
-                <div class="title">Wordle</div>
-                <div class="tag">html5</div>
-            </div>
+            <div class="info"><div class="title">Wordle</div><div class="tag">html5</div></div>
+            <button class="star-btn" onclick="toggleStar(event, this)">&#9733;</button>
             <div class="arrow">&rarr;</div>
         </a>
-        <a href="2048/" class="game-card">
+        <a href="2048/" class="game-card" data-game="2048">
             <div class="icon-wrap">&#128290;</div>
-            <div class="info">
-                <div class="title">2048</div>
-                <div class="tag">html5</div>
-            </div>
+            <div class="info"><div class="title">2048</div><div class="tag">html5</div></div>
+            <button class="star-btn" onclick="toggleStar(event, this)">&#9733;</button>
+            <div class="arrow">&rarr;</div>
+        </a>
+        <a href="retrobowl/" class="game-card" data-game="retrobowl">
+            <div class="icon-wrap">&#127944;</div>
+            <div class="info"><div class="title">Retro Bowl</div><div class="tag">html5</div></div>
+            <button class="star-btn" onclick="toggleStar(event, this)">&#9733;</button>
+            <div class="arrow">&rarr;</div>
+        </a>
+        <a href="jetpackjoyride/" class="game-card" data-game="jetpackjoyride">
+            <div class="icon-wrap">&#128640;</div>
+            <div class="info"><div class="title">Jetpack Joyride</div><div class="tag">html5</div></div>
+            <button class="star-btn" onclick="toggleStar(event, this)">&#9733;</button>
+            <div class="arrow">&rarr;</div>
+        </a>
+        <a href="sm64/" class="game-card" data-game="sm64">
+            <div class="icon-wrap">&#127812;</div>
+            <div class="info"><div class="title">Super Mario 64</div><div class="tag">wasm</div></div>
+            <button class="star-btn" onclick="toggleStar(event, this)">&#9733;</button>
+            <div class="arrow">&rarr;</div>
+        </a>
+        <a href="bitlife/" class="game-card" data-game="bitlife">
+            <div class="icon-wrap">&#128100;</div>
+            <div class="info"><div class="title">BitLife</div><div class="tag">unity webgl</div></div>
+            <button class="star-btn" onclick="toggleStar(event, this)">&#9733;</button>
             <div class="arrow">&rarr;</div>
         </a>
     </div>
@@ -558,6 +603,66 @@
         }
         updateBanner();
         setInterval(updateBanner, 5000);
+
+        // --- Starred games ---
+        function saveStars(list) {
+            const val = JSON.stringify(list);
+            try { localStorage.setItem('starredGames', val); } catch(e) {}
+            const d = new Date();
+            d.setTime(d.getTime() + 365 * 86400000);
+            document.cookie = "starredGames=" + encodeURIComponent(val) + ";expires=" + d.toUTCString() + ";path=/;SameSite=Lax";
+        }
+        function loadStars() {
+            // Try cookie first
+            const m = document.cookie.match(/(?:^|; )starredGames=([^;]*)/);
+            if (m) try { return JSON.parse(decodeURIComponent(m[1])); } catch(e) {}
+            // Fallback to localStorage
+            try {
+                const v = localStorage.getItem('starredGames');
+                if (v) return JSON.parse(v);
+            } catch(e) {}
+            return [];
+        }
+        function toggleStar(e, btn) {
+            e.preventDefault();
+            e.stopPropagation();
+            const card = btn.closest('.game-card');
+            const game = card.dataset.game;
+            let stars = loadStars();
+            if (stars.includes(game)) {
+                stars = stars.filter(g => g !== game);
+                btn.classList.remove('active');
+            } else {
+                stars.push(game);
+                btn.classList.add('active');
+            }
+            saveStars(stars);
+            renderFavorites();
+        }
+        function renderFavorites() {
+            const stars = loadStars();
+            const section = document.getElementById('favSection');
+            const grid = document.getElementById('favGrid');
+            grid.innerHTML = '';
+            if (stars.length === 0) {
+                section.classList.remove('visible');
+                return;
+            }
+            section.classList.add('visible');
+            stars.forEach(game => {
+                const orig = document.querySelector('.games [data-game="' + game + '"]');
+                if (!orig) return;
+                const clone = orig.cloneNode(true);
+                clone.removeAttribute('style');
+                grid.appendChild(clone);
+            });
+            // mark stars in main grid
+            document.querySelectorAll('.games .star-btn').forEach(btn => {
+                const game = btn.closest('.game-card').dataset.game;
+                btn.classList.toggle('active', stars.includes(game));
+            });
+        }
+        renderFavorites();
     </script>
 </body>
 </html>
