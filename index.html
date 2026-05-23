@@ -385,9 +385,87 @@
             border-left-color: var(--gold);
         }
 
+        /* --- TESTING SECTION --- */
+        .testing-section {
+            max-width: 860px; width: 100%;
+            position: relative; z-index: 1;
+            margin-top: 36px;
+            display: none;
+        }
+        .testing-section.visible { display: block; }
+        .testing-header {
+            display: flex; align-items: center; justify-content: center;
+            gap: 12px; margin-bottom: 14px;
+            overflow: hidden;
+        }
+        .testing-header .testing-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px; font-weight: 500;
+            color: #c25a3a;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            animation: slideX 4s ease-in-out infinite;
+        }
+        .testing-header .testing-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: #c25a3a;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        @keyframes slideX {
+            0%, 100% { transform: translateX(-8px); }
+            50% { transform: translateX(8px); }
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+        .testing-card {
+            background: var(--surface);
+            border: 1px solid rgba(194, 90, 58, 0.15);
+            border-radius: var(--radius);
+            text-decoration: none; color: #fff;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            position: relative; overflow: hidden;
+            display: flex; align-items: center; gap: 16px;
+            max-width: 400px; margin: 0 auto;
+        }
+        .testing-card .icon-wrap {
+            flex-shrink: 0; width: 64px; height: 64px;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--surface-2);
+            border-right: 1px solid rgba(194, 90, 58, 0.1);
+            font-size: 28px;
+        }
+        .testing-card .info {
+            padding: 18px 20px 18px 0;
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .testing-card .title {
+            font-size: 14px; font-weight: 600; color: var(--text-bright);
+        }
+        .testing-card .tag {
+            font-size: 11px; font-family: 'JetBrains Mono', monospace;
+            color: #c25a3a; letter-spacing: 0.5px; opacity: 0.7;
+        }
+        .testing-card .arrow {
+            position: absolute; right: 18px; top: 50%;
+            transform: translateY(-50%) translateX(-4px);
+            font-size: 14px; color: #c25a3a;
+            opacity: 0; transition: all 0.3s;
+        }
+        .testing-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(194, 90, 58, 0.35);
+            background: var(--surface-2);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+        }
+        .testing-card:hover .arrow { opacity: 1; transform: translateY(-50%) translateX(0); }
+        .testing-card:hover .title { color: #e8a08a; }
+
         /* --- AD BANNER --- */
         .ad-banner {
-            max-width: 860px; width: 100%;
+            max-width: 480px; width: 100%;
             position: relative; z-index: 1;
             margin-top: 40px;
             display: block;
@@ -395,7 +473,7 @@
             overflow: hidden;
             border: 1px solid var(--border);
             transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-            opacity: 0.85;
+            opacity: 0.7;
         }
         .ad-banner:hover {
             opacity: 1;
@@ -640,6 +718,22 @@
         </a>
     </div>
 
+    <div class="testing-section" id="testingSection">
+        <div class="testing-header">
+            <div class="testing-dot"></div>
+            <div class="testing-label">in-testing games, only for testing, not meant for public use.</div>
+            <div class="testing-dot"></div>
+        </div>
+        <a href="http://tankgame.seraphweb.com:9998" class="testing-card" target="_blank">
+            <div class="icon-wrap">&#128951;</div>
+            <div class="info">
+                <div class="title">Tank Game</div>
+                <div class="tag">in-testing</div>
+            </div>
+            <div class="arrow">&rarr;</div>
+        </a>
+    </div>
+
     <a href="https://lenosamples.carrd.co/" target="_blank" rel="noopener" class="ad-banner">
         <img src="ad-banner.png" alt="Leno Samples">
     </a>
@@ -680,10 +774,19 @@
             document.getElementById('greeting').textContent = g(name);
             document.getElementById('subtext').textContent = s(name);
         }
+        function checkTesting(name) {
+            const el = document.getElementById('testingSection');
+            if (name && name.toLowerCase() === 'gunner') {
+                el.classList.add('visible');
+            } else {
+                el.classList.remove('visible');
+            }
+        }
         const saved = loadName();
         if (saved) {
             document.getElementById('nameOverlay').classList.add('hidden');
             showGreeting(saved);
+            checkTesting(saved);
         }
         document.getElementById('nameBtn').addEventListener('click', submit);
         document.getElementById('nameInput').addEventListener('keydown', e => {
@@ -695,6 +798,7 @@
             saveName(name);
             document.getElementById('nameOverlay').classList.add('hidden');
             showGreeting(name);
+            checkTesting(name);
         }
         // --- School countdown banner ---
         function updateBanner() {
