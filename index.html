@@ -485,6 +485,23 @@
             width: 100%; display: block;
         }
 
+        .footer-link {
+            margin-top: 24px;
+            position: relative; z-index: 1;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+        }
+        .footer-link a {
+            color: var(--gold-dim);
+            text-decoration: none;
+            opacity: 0.5;
+            transition: opacity 0.2s, color 0.2s;
+        }
+        .footer-link a:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+
         /* --- NAME PROMPT --- */
         .overlay {
             position: fixed; inset: 0;
@@ -737,6 +754,8 @@
     <a href="https://lenosamples.carrd.co/" target="_blank" rel="noopener" class="ad-banner">
         <img src="ad-banner.png" alt="Leno Samples">
     </a>
+
+    <div class="footer-link"><a href="/privacy/">Privacy Policy</a></div>
 
     <script>
         const greetings = [
