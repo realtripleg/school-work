@@ -15,9 +15,12 @@
 <body>
     <a href="/vex-games/" class="back">&larr; Back</a>
     <div id="ruffle"></div>
-    <script src="/ruffle/ruffle.js"></script>
     <script>
         window.RufflePlayer = window.RufflePlayer || {};
+        window.RufflePlayer.config = { publicPath: "/ruffle/" };
+    </script>
+    <script src="/ruffle/ruffle.js"></script>
+    <script>
         window.addEventListener("load", () => {
             const ruffle = window.RufflePlayer.newest();
             const player = ruffle.createPlayer();
