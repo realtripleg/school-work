@@ -1603,6 +1603,47 @@
             .new-badge { animation: none !important; }
             .header::before { animation: none !important; }
         }
+
+        /* --- COOKIE CONSENT --- */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            z-index: 200;
+            background: rgba(13, 13, 22, 0.96);
+            border-top: 1px solid rgba(191, 155, 48, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 13px;
+            color: var(--text);
+            animation: slideUp 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .cookie-banner.hidden { display: none; }
+        .cookie-banner a { color: var(--gold-dim); }
+        .cookie-banner a:hover { color: var(--gold-light); }
+        .cookie-accept {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            padding: 8px 20px;
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--gold);
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .cookie-accept:hover {
+            background: var(--gold);
+            color: var(--bg);
+        }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -2518,6 +2559,32 @@
         }
 
     })();
+    </script>
+
+    <!-- ============ COOKIE CONSENT ============ -->
+    <div class="cookie-banner" id="cookieBanner">
+        <span>This site uses cookies to save your name and preferences. No tracking. <a href="/privacy/">Learn more</a></span>
+        <button class="cookie-accept" id="cookieAccept">got it</button>
+    </div>
+    <script>
+        (function() {
+            var banner = document.getElementById('cookieBanner');
+            var accepted = false;
+            try { accepted = localStorage.getItem('cookieConsent') === 'yes'; } catch(e) {}
+            if (!accepted) {
+                var m = document.cookie.match(/(?:^|; )cookieConsent=([^;]*)/);
+                if (m && decodeURIComponent(m[1]) === 'yes') accepted = true;
+            }
+            if (accepted) {
+                banner.classList.add('hidden');
+            }
+            document.getElementById('cookieAccept').addEventListener('click', function() {
+                try { localStorage.setItem('cookieConsent', 'yes'); } catch(e) {}
+                var d = new Date(); d.setTime(d.getTime() + 365 * 86400000);
+                document.cookie = 'cookieConsent=yes;expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+                banner.classList.add('hidden');
+            });
+        })();
     </script>
 </body>
 </html>
