@@ -1596,6 +1596,100 @@
             color: var(--bg);
         }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        /* ---- service notice: bar under the status bar + one-time popup ---- */
+        .notice-bar {
+            position: fixed;
+            top: 44px; left: 0; right: 0;
+            z-index: 89;
+            display: flex; align-items: center; justify-content: center;
+            gap: 10px;
+            min-height: 38px;
+            padding: 8px 24px;
+            background: rgba(13, 13, 22, 0.96);
+            border-bottom: 1px solid rgba(198, 160, 52, 0.18);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11.5px;
+            letter-spacing: 0.3px;
+            line-height: 1.4;
+            color: var(--gold-light);
+            text-align: center;
+        }
+        .notice-bar .notice-tag {
+            flex-shrink: 0;
+            padding: 2px 7px;
+            border: 1px solid rgba(198, 160, 52, 0.35);
+            border-radius: 6px;
+            font-size: 10px; font-weight: 600;
+            letter-spacing: 1px; text-transform: uppercase;
+            color: var(--gold);
+        }
+        body { padding-top: clamp(150px, 16vw, 190px); }
+
+        .notice-overlay {
+            position: fixed; inset: 0;
+            background: rgba(3, 3, 8, 0.92);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 210;
+            animation: overlayIn 0.3s ease;
+        }
+        .notice-overlay.hidden { display: none; }
+        .notice-box {
+            background: var(--surface);
+            border: 1px solid rgba(198, 160, 52, 0.12);
+            border-radius: var(--radius-lg);
+            padding: clamp(24px, 4vw, 40px) clamp(20px, 4vw, 44px);
+            max-width: 480px; width: 92%;
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(198, 160, 52, 0.04);
+            animation: boxIn 0.4s var(--ease-out) 0.1s backwards;
+        }
+        .notice-box h2 {
+            font-size: 20px; font-weight: 800;
+            background: linear-gradient(135deg, #f5e6a3, #c6a034);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 16px;
+        }
+        .notice-box p {
+            font-size: 14px; line-height: 1.7;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+        .notice-box p strong { color: var(--gold-light); font-weight: 600; }
+        .notice-box p.notice-sub {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px; color: var(--gold-whisper);
+            margin-bottom: 0;
+        }
+        .notice-btn {
+            margin-top: 24px; width: 100%;
+            padding: 12px; border: 1px solid var(--gold);
+            border-radius: var(--radius);
+            background: transparent; color: var(--gold);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px; cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+        }
+        .notice-btn:hover { background: var(--gold); color: var(--bg); }
+
+        @media (max-width: 640px) {
+            .notice-bar { top: 36px; padding: 7px 12px; font-size: 11px; }
+            body { padding-top: 130px; }
+        }
+        .notice-bar .notice-short { display: none; }
+        @media (max-width: 480px) {
+            .notice-bar .notice-tag { display: none; }
+            .notice-bar .notice-long { display: none; }
+            .notice-bar .notice-short { display: inline; }
+            body { padding-top: 132px; }
+        }
+        @media (max-width: 360px) {
+            body { padding-top: 126px; }
+        }
     </style>
 </head>
 <body>
@@ -1617,6 +1711,12 @@
             </button>
         </div>
     </nav>
+
+    <div class="notice-bar" id="noticeBar" role="status">
+        <span class="notice-tag">notice</span>
+        <span class="notice-long">Starting soon, seraphweb.com will no longer serve games directly &mdash; Seraph is moving its focus to supplying games that are unblockable. More info soon.</span>
+        <span class="notice-short">Starting soon, seraphweb.com will stop serving games directly. More info soon.</span>
+    </div>
 
     <div class="changelog-overlay hidden" id="changelogOverlay" role="dialog" aria-modal="true" aria-label="Changelog">
         <div class="changelog-box">
@@ -1640,6 +1740,16 @@
                 </ul>
             </div>
             <button class="changelog-close" id="changelogClose">close</button>
+        </div>
+    </div>
+
+    <div class="notice-overlay hidden" id="noticeOverlay" role="dialog" aria-modal="true" aria-labelledby="noticeTitle">
+        <div class="notice-box">
+            <h2 id="noticeTitle">Seraph is changing</h2>
+            <p>Starting soon, <strong>seraphweb.com will no longer serve games directly.</strong></p>
+            <p>Seraph is moving its focus to supplying games that are unblockable.</p>
+            <p class="notice-sub">details on how to get them will be posted here soon.</p>
+            <button class="notice-btn" id="noticeClose" type="button">got it</button>
         </div>
     </div>
 
@@ -2490,6 +2600,44 @@
                 document.cookie = 'cookieConsent=yes;expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
                 banner.classList.add('hidden');
             });
+        })();
+    </script>
+
+    <script>
+        (function() {
+            var overlay = document.getElementById('noticeOverlay');
+            var closeBtn = document.getElementById('noticeClose');
+            var nameOverlay = document.getElementById('nameOverlay');
+            var KEY = 'noticeSeen_2026_09';   // bump when the notice changes so everyone sees it again
+
+            function seen() {
+                try { if (localStorage.getItem(KEY) === 'yes') return true; } catch(e) {}
+                return new RegExp('(?:^|; )' + KEY + '=yes').test(document.cookie);
+            }
+            function markSeen() {
+                try { localStorage.setItem(KEY, 'yes'); } catch(e) {}
+                var d = new Date(); d.setTime(d.getTime() + 365 * 86400000);
+                document.cookie = KEY + '=yes;expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+            }
+            function open() { overlay.classList.remove('hidden'); closeBtn.focus(); }
+            function close() { overlay.classList.add('hidden'); markSeen(); }
+
+            closeBtn.addEventListener('click', close);
+            overlay.addEventListener('click', function(e) { if (e.target === overlay) close(); });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && !overlay.classList.contains('hidden')) close();
+            });
+
+            if (seen()) return;
+            // don't stack on top of the name prompt: wait until it has been dismissed
+            if (nameOverlay && !nameOverlay.classList.contains('hidden')) {
+                var obs = new MutationObserver(function() {
+                    if (nameOverlay.classList.contains('hidden')) { obs.disconnect(); setTimeout(open, 400); }
+                });
+                obs.observe(nameOverlay, { attributes: true, attributeFilter: ['class'] });
+            } else {
+                setTimeout(open, 600);
+            }
         })();
     </script>
 </body>
