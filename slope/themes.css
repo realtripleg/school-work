@@ -1,0 +1,101 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+}
+
+.webgl-content * {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.webgl-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /*disable selection in games which select content when dragging mouse*/
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#gameContainer canvas {
+    display: block;
+    background: #000;
+}
+
+.webgl-content .logo,
+.webgl-content .progress {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.webgl-content .logo {
+    width: 260px;
+    height: 60px;
+    margin-top: -60px;
+    color: #eaeaea;
+    font: 600 34px/60px system-ui, -apple-system, "Segoe UI", sans-serif;
+    letter-spacing: 0.06em;
+    text-align: center;
+}
+
+.webgl-content .logo::after {
+    content: "SLOPE";
+}
+
+.webgl-content .progress {
+    height: 8px;
+    width: 240px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #1c1c1c;
+}
+
+.webgl-content .progress .empty {
+    background: #1c1c1c;
+    float: right;
+    height: 100%;
+}
+
+.webgl-content .progress .full {
+    background: #4ade80;
+    float: left;
+    height: 100%;
+}
+
+.fullscreen {
+    position: absolute;
+    bottom: 14px;
+    left: 14px;
+    z-index: 10;
+    opacity: 0.35;
+    transition: opacity 0.15s ease;
+}
+
+.fullscreen:hover {
+    opacity: 1;
+}
+
+.fullscreen button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background: #111;
+    color: #eaeaea;
+    cursor: pointer;
+}

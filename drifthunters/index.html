@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>Drift Hunters</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #000;
+      }
+      .webgl-content * {
+        border: 0;
+        margin: 0;
+        padding: 0;
+      }
+      .webgl-content {
+        position: absolute;
+      }
+      .webgl-content,
+      #gameContainer,
+      #unityContainer,
+      canvas {
+        width: 100% !important;
+        height: 100% !important;
+      }
+    </style>
+  </head>
+  <body style="margin: 0 auto; overflow: hidden">
+    <div class="webgl-content">
+      <div
+        id="gameContainer"
+        style="width: 100%; height: 100%; margin: 0"
+      ></div>
+    </div>
+  </body>
+  <script src="UnityLoader2019.js"></script>
+  <script>
+    var gameInstance = UnityLoader.instantiate("gameContainer", "dh.json");
+  </script>
+</html>
